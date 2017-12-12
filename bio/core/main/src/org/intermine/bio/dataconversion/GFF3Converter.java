@@ -352,6 +352,9 @@ public class GFF3Converter extends DataConverter
 
         List<?> names = record.getNames();
         String symbol = null;
+        
+        // FIXME :: init. List object is not used 
+        // calling createSynonyms might return null value
         List<String> synonyms = new ArrayList<String>();
         // get the attribute set for symbol
         if (configAttr.containsKey(this.orgTaxonId)) {
@@ -392,7 +395,10 @@ public class GFF3Converter extends DataConverter
             // if we end up removing this entry, we need to delete these too.
             handler.addSynonym(synonym);
         }
-        handler.addSynonyms(synonyms);
+        // fixed :: possible null value returned by createSynonyms(...)
+        // Due to some record in the gff file might not contains this attribute.
+        if (synonyms != null)
+        	handler.addSynonyms(synonyms);
 
         handler.process(record);
 
