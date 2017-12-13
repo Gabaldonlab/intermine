@@ -98,7 +98,7 @@ public class CgdIdentifiersConverter extends BioFileConverter
                         gene.setAttribute("name", name);
                     }
                     if (!StringUtils.isEmpty(shortDesc)) {
-                        gene.setAttribute("breifDescription", shortDesc); // brief Description
+                        gene.setAttribute("briefDescription", shortDesc); // brief Description
                     }
                 }
                 // gene.setReference("organism", getOrganism(YEAST_TAXON));
