@@ -92,13 +92,13 @@ public class CgdIdentifiersConverter extends BioFileConverter
                         gene.setAttribute("symbol", systematicName);
                     }
                     if (!StringUtils.isEmpty(secondaryidentifier)) {
-                        gene.setAttribute("secondaryidentifier", secondaryidentifier);
+                        gene.setAttribute("secondaryIdentifier", secondaryidentifier);
                     }
                     if (!StringUtils.isEmpty(name)) {
                         gene.setAttribute("name", name);
                     }
                     if (!StringUtils.isEmpty(shortDesc)) {
-                        gene.setAttribute("briefDescription", shortDesc); // brief Description
+                        gene.setAttribute("briefDescription", shortDesc); // brief Description 
                     }
                 }
                 // gene.setReference("organism", getOrganism(YEAST_TAXON));
