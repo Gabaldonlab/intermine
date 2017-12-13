@@ -29,7 +29,7 @@ public class CgdIdentifiersConverter extends BioFileConverter
     //
     private static final String DATASET_TITLE = "CGD";
     private static final String DATA_SOURCE_NAME = "CGD Genes";
-
+    private String organismTaxonId = null;
     /**
      * Constructor
      * @param writer the ItemWriter used to handle the resultant items
@@ -38,6 +38,14 @@ public class CgdIdentifiersConverter extends BioFileConverter
     public CgdIdentifiersConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
     }
+
+
+   public void setTaxonId(String taxonId) {
+   	this.organismTaxonId = taxonId;	
+
+   }
+
+
 
     /**
      * 
@@ -88,20 +96,21 @@ public class CgdIdentifiersConverter extends BioFileConverter
                 if (!StringUtils.isEmpty(primaryidentifier)) {
                     gene.setAttribute("primaryIdentifier", primaryidentifier);
 
+                    // if (!StringUtils.isEmpty(systematicName)) {
+                    //    gene.setAttribute("symbol", systematicName);
+                    //}
                     if (!StringUtils.isEmpty(systematicName)) {
-                        gene.setAttribute("symbol", systematicName);
-                    }
-                    if (!StringUtils.isEmpty(secondaryidentifier)) {
-                        gene.setAttribute("secondaryIdentifier", secondaryidentifier);
+                        // gene.setAttribute("secondaryIdentifier", secondaryidentifier);
+			 gene.setAttribute("secondaryIdentifier",systematicName);
                     }
                     if (!StringUtils.isEmpty(name)) {
-                        gene.setAttribute("name", name);
+                        gene.setAttribute("symbol", name);
                     }
                     if (!StringUtils.isEmpty(shortDesc)) {
                         gene.setAttribute("briefDescription", shortDesc); // brief Description 
                     }
                 }
-                // gene.setReference("organism", getOrganism(YEAST_TAXON));
+                gene.setReference("organism", getOrganism(organismTaxonId));
                 store(gene);
             }
         }
