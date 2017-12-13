@@ -79,7 +79,7 @@ public class CgdIdentifiersConverter extends BioFileConverter
             String secondaryidentifier = line[9]; // CGDID
             String chromosomeName = line[4];
             String name = line[1];
-            String shortDesc = line[10]
+            String shortDesc = line[10] ;
             Item gene = createItem("Gene");
             if ( !StringUtils.isEmpty(chromosomeName) ) 
             {
