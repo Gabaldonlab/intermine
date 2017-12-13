@@ -1,0 +1,5 @@
+<project name="cgd-identifiers" default="default" basedir=".">
+  <description>build, test, package cgd-identifiers</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+</project>
