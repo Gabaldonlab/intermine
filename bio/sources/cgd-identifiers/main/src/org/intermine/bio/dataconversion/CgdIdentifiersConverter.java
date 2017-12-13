@@ -27,8 +27,8 @@ import org.intermine.xml.full.Item;
 public class CgdIdentifiersConverter extends BioFileConverter
 {
     //
-    private static final String DATASET_TITLE = "CGD";
-    private static final String DATA_SOURCE_NAME = "CGD Genes";
+    private static final String DATASET_TITLE = "CGD Genes Identifiers";
+    private static final String DATA_SOURCE_NAME = "CGD";
     private String organismTaxonId = null;
     /**
      * Constructor
@@ -106,9 +106,9 @@ public class CgdIdentifiersConverter extends BioFileConverter
                     if (!StringUtils.isEmpty(name)) {
                         gene.setAttribute("symbol", name);
                     }
-                    if (!StringUtils.isEmpty(shortDesc)) {
-                        gene.setAttribute("briefDescription", shortDesc); // brief Description 
-                    }
+                    //if (!StringUtils.isEmpty(shortDesc)) {
+                    //    gene.setAttribute("briefDescription", shortDesc); // brief Description 
+                    //}
                 }
                 gene.setReference("organism", getOrganism(organismTaxonId));
                 store(gene);
