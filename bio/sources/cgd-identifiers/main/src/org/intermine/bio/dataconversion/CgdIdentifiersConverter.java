@@ -71,7 +71,9 @@ public class CgdIdentifiersConverter extends BioFileConverter
         while (lineIter.hasNext()) {
             String[] line = (String[]) lineIter.next();
 
-            
+            // skip comment line 
+            if (line[0].startsWith("!"))
+            	continue;
             
             String systematicName = line[0]; // id from the gff file
             
