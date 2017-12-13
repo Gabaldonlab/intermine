@@ -52,6 +52,23 @@ public class CandidaGffGFF3RecordHandler extends GFF3RecordHandler
         //
         // You should make sure that new Items you create are unique, i.e. by storing in a map by
         // some identifier. 
+        //
+        //super.process(record);
+
+    	Item feature = getFeature();
+
+        String clsName = feature.getClassName();
+
+        if ("Gene".equals(clsName)) {
+            // move Gene.primaryIdentifier to Gene.secondaryIdentifier
+            // and remove Gene.primaryIdentifier
+            
+            if (feature.getAttribute("primaryIdentifier") != null) {
+            	String secondary = feature.getAttribute("primaryIdentifier").getValue();
+                feature.setAttribute("secondaryIdentifier", secondary);
+                feature.removeAttribute("primaryIdentifier");
+             }                                                                                                                      
+         }
 
     }
 
