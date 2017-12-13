@@ -1,0 +1,5 @@
+<project name="candida-gff" default="default" basedir=".">
+  <description>build, test, package candida-gff</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+</project>
