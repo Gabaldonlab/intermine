@@ -1,0 +1,4 @@
+<project name="cgob-orthologs-tasks" default="default" basedir=".">
+  <description>build cgob-orthologs tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>
