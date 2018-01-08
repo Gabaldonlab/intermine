@@ -4,4 +4,27 @@
 <classes>
 <!-- add any <class> elements here -->
 
+	<class  name="Strain"  extends="Organism"  is-interface="true">
+<!--	<attribute name="name" type="java.lang.String" /> -->
+<!--	<attribute name="taxonId" type="java.lang.String" /> -->
+	<reference name="organism" referenced-type="Organism" reverse-reference="strains"/>
+	</class>
+
+        <class  name="Isolate"    is-interface="true">
+	 	<attribute name="site" type="java.lang.String" />
+		<attribute name="country" type="java.lang.String" />
+		<attribute name="mating" type="java.lang.String" />
+		<reference name="host" referenced-type="Organism" />
+        <reference name="strain" referenced-type="Strain"/>
+	<reference name="organism" referenced-type="Organism" reverse-reference="isolates"/>
+        </class>
+
+
+	
+	<class name="Organism" is-interface="true">
+	  <collection name="strains" referenced-type="Strain" reverse-reference="organism"/>
+	  <collection name="isolates" referenced-type="Isolate" reverse-reference="organism"/>
+	</class>
+
+
 </classes>
