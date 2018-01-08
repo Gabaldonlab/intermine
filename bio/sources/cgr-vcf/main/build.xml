@@ -1,0 +1,4 @@
+<project name="cgr-vcf-tasks" default="default" basedir=".">
+  <description>build cgr-vcf tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>
