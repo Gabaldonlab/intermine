@@ -27,7 +27,7 @@ import org.intermine.xml.full.Item;
 public class CgdIdentifiersConverter extends BioFileConverter
 {
     //
-    private static final String DATASET_TITLE = "CGD Genes Identifiers";
+    private static final String DATASET_TITLE = "Candida Genome Database";
     private static final String DATA_SOURCE_NAME = "CGD";
     private String organismTaxonId = null;
     /**
