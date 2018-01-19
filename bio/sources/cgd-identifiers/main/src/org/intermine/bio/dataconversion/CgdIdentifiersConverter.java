@@ -84,34 +84,38 @@ public class CgdIdentifiersConverter extends BioFileConverter
             	continue;
             
             String systematicName = line[0]; // id from the gff file
-            
+            String featureType = line[3];
             String primaryidentifier = line[8]; // CGDID
             String secondaryidentifier = line[9]; // CGDID
             String chromosomeName = line[4];
             String name = line[1];
             String shortDesc = line[10] ;
-            Item gene = createItem("Gene");
-            if ( !StringUtils.isEmpty(chromosomeName) ) 
-            {
-                if (!StringUtils.isEmpty(primaryidentifier)) {
-                    gene.setAttribute("primaryIdentifier", primaryidentifier);
-
-                    // if (!StringUtils.isEmpty(systematicName)) {
-                    //    gene.setAttribute("symbol", systematicName);
-                    //}
-                    if (!StringUtils.isEmpty(systematicName)) {
-                        // gene.setAttribute("secondaryIdentifier", secondaryidentifier);
-			 gene.setAttribute("secondaryIdentifier",systematicName);
-                    }
-                    if (!StringUtils.isEmpty(name)) {
-                        gene.setAttribute("symbol", name);
-                    }
-                    //if (!StringUtils.isEmpty(shortDesc)) {
-                    //    gene.setAttribute("briefDescription", shortDesc); // brief Description 
-                    //}
-                }
-                gene.setReference("organism", getOrganism(organismTaxonId));
-                store(gene);
+            
+            if(featureType.contains("ORF")) {
+            
+	            Item gene = createItem("Gene");
+	            if ( !StringUtils.isEmpty(chromosomeName) ) 
+	            {
+	                if (!StringUtils.isEmpty(primaryidentifier)) {
+	                    gene.setAttribute("primaryIdentifier", primaryidentifier);
+	
+	                    // if (!StringUtils.isEmpty(systematicName)) {
+	                    //    gene.setAttribute("symbol", systematicName);
+	                    //}
+	                    if (!StringUtils.isEmpty(systematicName)) {
+	                        // gene.setAttribute("secondaryIdentifier", secondaryidentifier);
+	                    	gene.setAttribute("secondaryIdentifier",systematicName);
+	                    }
+	                    if (!StringUtils.isEmpty(name)) {
+	                        gene.setAttribute("symbol", name);
+	                    }
+	                    //if (!StringUtils.isEmpty(shortDesc)) {
+	                    //    gene.setAttribute("briefDescription", shortDesc); // brief Description 
+	                    //}
+	                }
+	                gene.setReference("organism", getOrganism(organismTaxonId));
+	                store(gene);
+	            }
             }
         }
     }
