@@ -91,6 +91,7 @@ public class CgdIdentifiersConverter extends BioFileConverter
             String name = line[1];
             String shortDesc = line[10] ;
             
+            // only process records of type genes - in this file is ORF
             if(featureType.contains("ORF")) {
             
 	            Item gene = createItem("Gene");
