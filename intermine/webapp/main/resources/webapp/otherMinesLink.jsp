@@ -6,6 +6,8 @@
 
 <!-- This section is rendered with Ajax to improve responsiveness -->
 <c:if test="${!empty mines && imf:hasValidPath(object, 'organism.shortName', INTERMINE_API)}">
+<!-- Do not check if the object does not have primaryIdentifier -->
+<c:if test="${ imf:hasValidPath(object, 'primaryIdentifier', INTERMINE_API)}">
 <script type="text/javascript" charset="utf-8" src="js/other-mines-links.js"></script>
 <h3 class="goog"><fmt:message key="othermines.title"/></h3>
 <div id="friendlyMines">
@@ -37,4 +39,5 @@
     </div>
   </c:forEach>
 </div>
+</c:if>
 </c:if>
