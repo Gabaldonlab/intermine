@@ -192,8 +192,10 @@ public class CgdOrthologsConverter extends BioFileConverter
             String gene1RefId = getGene(gene1_1stId, gene1_2ndId,gene1_symbol,taxonIds[0],organism1RefId);
 			String gene2RefId = getGene(gene2_1stsId, gene2_2ndId,gene2_symbol,taxonIds[1],organism2RefId);
     		
-			createHomologue(gene1RefId,gene2RefId);
-			createHomologue(gene2RefId,gene1RefId);
+			if (gene1RefId != null && gene2RefId != null ) {
+				createHomologue(gene1RefId,gene2RefId);
+				createHomologue(gene2RefId,gene1RefId);
+			}
 
     	}
     }
@@ -256,8 +258,15 @@ public class CgdOrthologsConverter extends BioFileConverter
     		// If not then use the provided id in the file as primary
     		if (rslv!= null && rslv.hasTaxon(taxonId)) {
     			int resCount = rslv.countResolutions(taxonId, "gene", gene1stId);
-    			if (resCount == 1) 
+    			if (resCount == 1) {
     				resolvedIdentifier = rslv.resolveId(taxonId, "gene", gene1stId).iterator().next();
+    			}
+    			else {
+    				// can not resolve the id
+    				// this mean that this gene might no exit in the current version or no infomation is provided about it so do not add
+    				// resolvedIdentifier = null;
+    				return null;
+    			}
     		}
     		
     		
