@@ -2,6 +2,29 @@
 <!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
 
 <classes>
-<!-- add any <class> elements here -->
-
+<!-- load this source after loading strains info -->
+   <class name="SequenceAlteration" extends="SequenceFeature" is-interface="true">
+     <attribute name="variantSequence" type="java.lang.String"/>
+     <attribute name="referenceSequence" type="java.lang.String"/>
+     <attribute name="type" type="java.lang.String"/>
+     <collection name="isolates" referenced-type="Isolate" reverse-reference="sequenceAlterations"  /> 
+   </class>
+   
+   <class name="GeneticMarker" extends="SequenceAlteration" is-interface="true"/>
+   <class name="Indel" extends="SequenceAlteration" is-interface="true"/>
+   <class name="Deletion" extends="SequenceAlteration" is-interface="true"/>
+   <class name="Insertion" extends="SequenceAlteration" is-interface="true"/>
+   <class name="SNV" extends="SequenceAlteration" is-interface="true"/>
+   <class name="Substitution" extends="SequenceAlteration" is-interface="true"/>
+   
+   
+   <class  name="Isolate"    is-interface="true">
+        <collection name="sequenceAlterations" referenced-type="SequenceAlteration" reverse-reference="isolates"  /> 
+   </class>
+   
+<!--     <class name="SequenceVariant"  is-interface="true"> -->
+<!--      <attribute name="variantSequence" type="java.lang.String"/> -->
+<!--      <attribute name="type" type="java.lang.String"/> -->
+<!--    </class> -->
+   
 </classes>
