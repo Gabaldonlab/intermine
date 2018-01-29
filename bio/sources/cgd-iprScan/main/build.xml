@@ -1,0 +1,4 @@
+<project name="cgd-iprScan-tasks" default="default" basedir=".">
+  <description>build cgd-iprScan tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>

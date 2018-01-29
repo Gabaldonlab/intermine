@@ -1,0 +1,5 @@
+<project name="cgd-iprScan" default="default" basedir=".">
+  <description>build, test, package cgd-iprScan</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+</project>
