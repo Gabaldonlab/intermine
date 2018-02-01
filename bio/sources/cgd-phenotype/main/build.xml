@@ -1,0 +1,4 @@
+<project name="cgd-phenotype-tasks" default="default" basedir=".">
+  <description>build cgd-phenotype tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>
