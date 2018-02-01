@@ -1,0 +1,5 @@
+<project name="apo" default="default" basedir=".">
+  <description>build, test, package apo</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+</project>
