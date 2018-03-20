@@ -3,6 +3,14 @@
 
 <classes>
 <!-- add any <class> elements here -->
-<class name="APOTerm" extends="OntologyTerm" is-interface="true"/>
+ <class name="APOTerm" extends="OntologyTerm" is-interface="true"/>
 
+	<class name="Observable" extends="APOTerm" is-interface="true">
+	</class>
+	<class name="MutantType" extends="APOTerm" is-interface="true">
+	</class>
+	<class name="Qualifier" extends="APOTerm" is-interface="true">
+	</class>
+	<class name="ExperimentType" extends="APOTerm" is-interface="true">
+	</class>	
 </classes>
