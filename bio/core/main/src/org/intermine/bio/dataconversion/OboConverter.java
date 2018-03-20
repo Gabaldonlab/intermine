@@ -54,6 +54,29 @@ public class OboConverter extends DataConverter
     private boolean createRelations = true;
     protected String prefix = null;
 
+    
+    
+    
+    
+    
+    
+    // my Extention to this converter
+    // ahafez
+    //
+	private static Map<String, String> namespaceToClass = new HashMap<String, String>();
+
+	// a good idea is to lead this from the configuration file
+	 static {
+		 namespaceToClass.put("observable","Observable");
+		 namespaceToClass.put("experiment_type","ExperimentType"); 
+		 namespaceToClass.put("qualifier","Qualifier");
+		 namespaceToClass.put("mutant_type","MutantType");
+
+	 }
+    
+    
+    
+    
     /**
      * Constructor for this class.
      *
@@ -179,7 +202,17 @@ public class OboConverter extends DataConverter
         }
         Item item = nameToTerm.get(termId);
         if (item == null) {
-            item = createItem(termClass);
+            // my Extention to this converter
+
+        	String inferedTermClass = termClass;
+        	
+//        	String nameSpace = term.getNamespace();
+//        	System.out.println("##++ nameSpace : " + nameSpace);
+	    	if (!StringUtils.isEmpty(term.getNamespace()) && namespaceToClass.containsKey(term.getNamespace()) )  {
+	    		inferedTermClass = namespaceToClass.get(term.getNamespace());
+	    	}
+
+            item = createItem(inferedTermClass);
             nameToTerm.put(termId, item);
             configureItem(termId, item, term);
         } else {
