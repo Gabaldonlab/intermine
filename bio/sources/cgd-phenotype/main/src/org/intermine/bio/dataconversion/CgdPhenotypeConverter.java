@@ -251,6 +251,9 @@ public class CgdPhenotypeConverter extends BioFileConverter
     
     private String getAPOTerm(String termName,String termType ) throws ObjectStoreException {
     	
+    	
+    	termName = termName.trim();
+    	
     	String tremRef = apoTerms.get(termName);
     	if(tremRef == null)
     	{
