@@ -23,9 +23,10 @@
     <class  name="Strain"   is-interface="true">
     </class>
 	<class name="Phenotype"  is-interface="true">
-	      <reference name="observable" referenced-type="Observable" />
-		  <reference name="qualifier" referenced-type="Qualifier" />
-		  <reference name="chemical" referenced-type="Chemical"/>
+		<attribute name="name" type="java.lang.String"/>
+	    <reference name="observable" referenced-type="Observable" />
+		<reference name="qualifier" referenced-type="Qualifier" />
+		<reference name="chemical" referenced-type="Chemical"/>
 		  
 	</class>
 	
@@ -33,6 +34,10 @@
 		<collection name="phenotypeAnnotations" referenced-type="PhenotypeAnnotation" reverse-reference="publications"/>
 	</class>
 	
+	
+	<class name="SequenceFeature"  is-interface="true">
+		<collection name="phenotypeAnnotation" referenced-type="PhenotypeAnnotation" reverse-reference="feature"/>
+	</class>
 		
 	<class name="PhenotypeAnnotation"  is-interface="true">
 	    <reference name="phenotype" referenced-type="Phenotype" />

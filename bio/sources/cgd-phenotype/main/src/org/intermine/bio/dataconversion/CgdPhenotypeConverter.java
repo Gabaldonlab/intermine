@@ -41,8 +41,8 @@ import org.intermine.xml.full.Item;
 public class CgdPhenotypeConverter extends BioFileConverter
 {
     //
-    private static final String DATASET_TITLE = "Add DataSet.title here";
-    private static final String DATA_SOURCE_NAME = "Add DataSource.name here";
+    private static final String DATASET_TITLE = "CGD Phenotypes";
+    private static final String DATA_SOURCE_NAME = "CGD";
 
     
     protected static final Logger LOG = Logger.getLogger(CgdPhenotypeConverter.class);
@@ -79,11 +79,16 @@ public class CgdPhenotypeConverter extends BioFileConverter
     
     private String taxonId  = null;
     private String refOragism = null;
+    private String namePrefixStrain = null;
+    
     public void setTaxonId(String taxonId)
     {
     	this.taxonId = taxonId;
     }
-    
+    public void setStrainPrefix(String strainNamePrefix)
+    {
+    	this.namePrefixStrain = strainNamePrefix;
+    }
     
     /**
      * 
@@ -151,30 +156,99 @@ public class CgdPhenotypeConverter extends BioFileConverter
     	
     	String strainName = tokens[8];
     	String strainRef = null;
-    	if(!"not recorded".equals(strainName.toLowerCase()))
+    	if(!StringUtils.isEmpty(strainName) &&  !"not recorded".equals(strainName.toLowerCase()))
     	{
     		strainRef = getStrain(strainName);
     	}
     	
     	String condition = tokens[11];
     	String observableStr = tokens[9];
-    	String chemicalDetails = null;
+    	String chemicalDetails = tokens[10];
+    	// get publication
+    	String publicationStr = tokens[4];
     	
-    	String chemicalRef =  null;
     	
-    	if(!StringUtils.isEmpty(tokens[10]))
+    	
+
+    	
+    	
+    	if(observableStr.contains("resistance to chemicals") && !StringUtils.isEmpty(tokens[10]))
     	{
-    		String[] chParts = tokens[10].split(Pattern.quote(" ("));
-    		chemicalRef = getChemical(chParts[0]);
-    		if(chParts.length > 1 )
-    		{
-    			chemicalDetails = tokens[10];
-    		}
+    		
+        	// only if observation is resistance to chemicals
+        	String[] chemicals = tokens[10].split(Pattern.quote("|")); // could be more than one Sep by |
+        	
+        	for (String chemicalstr : chemicals )
+        	{
+        		String chemicalRef =  null;
+        		String[] chParts = chemicalstr.split(Pattern.quote(" ("));
+//        		chemicalRef = getChemical(chParts[0]);
+            	String phenotypeRef = getPhenotype(observableStr, chParts[0]);
+        		addPhenotypeAnnotation( phenotypeRef, experimentTypeRef , featureItemRef, mutantRef, experimentDetails, chemicalDetails,  strainRef, condition,  publicationStr);
+
+        	}
+    		
+    		
+    		
+    		
+    	}
+    	else
+    	{
+        	String phenotypeRef = getPhenotype(observableStr, null);
+        	addPhenotypeAnnotation( phenotypeRef, experimentTypeRef , featureItemRef, mutantRef, experimentDetails, chemicalDetails,  strainRef, condition,  publicationStr);
+
     	}
     	
     	
-    	String phenotypeRef = getPhenotype(observableStr, chemicalRef);
+    	// Create and set the phenotype annotation
     	
+//    	Item phenotypeAnnotation = createItem("PhenotypeAnnotation");
+//
+//    	// required fields
+//    	phenotypeAnnotation.setReference("phenotype", phenotypeRef); 
+//    	phenotypeAnnotation.setReference("experimentType", experimentTypeRef); 
+//    	phenotypeAnnotation.setReference("feature", featureItemRef); 
+//    	phenotypeAnnotation.setReference("mutantType", mutantRef); 
+//    	phenotypeAnnotation.setReference("organism", refOragism); 
+//
+//    	
+//    	if(! StringUtils.isEmpty(experimentDetails))
+//    	{
+//    		phenotypeAnnotation.setAttribute("experimentDetails", experimentDetails);
+//    	}
+//    	if(! StringUtils.isEmpty(chemicalDetails))
+//    	{
+//    		phenotypeAnnotation.setAttribute("chemicalDetails", chemicalDetails);
+//    	}
+//    	if(! StringUtils.isEmpty(strainRef))
+//    	{
+//    		phenotypeAnnotation.setReference("strain", strainRef);
+//    	}
+//    	
+//    	if(! StringUtils.isEmpty(condition))
+//    	{
+//    		phenotypeAnnotation.setAttribute("condition", condition);
+//    	}
+//    	
+//    	
+//    	
+//    	
+//    	addPublication(phenotypeAnnotation, publicationStr);
+//    	
+//    	store(phenotypeAnnotation);
+    }
+    
+    
+    private void addPhenotypeAnnotation(String phenotypeRef,
+    		String experimentTypeRef ,
+    		String featureItemRef,
+    		String mutantRef,
+    		String experimentDetails,
+    		String chemicalDetails, 
+    		String strainRef,
+    		String condition, 
+    		String publicationStr) throws ObjectStoreException 
+    {
     	// Create and set the phenotype annotation
     	
     	Item phenotypeAnnotation = createItem("PhenotypeAnnotation");
@@ -208,25 +282,44 @@ public class CgdPhenotypeConverter extends BioFileConverter
     	
     	
     	// get publication
-    	String publicationStr = tokens[4];
+//    	String publicationStr = tokens[4];
     	addPublication(phenotypeAnnotation, publicationStr);
     	
     	store(phenotypeAnnotation);
     }
     
     
-    private String getPhenotype(String observableStr,String chemicalRef) throws ObjectStoreException {
+    private String getPhenotype(String observableStr,String chemicalName) throws ObjectStoreException {
     	
+    	
+    	String phenotypeName  = "";
+
     	String[] phenotypeTerms = observableStr.split(":");
     	
     	String observableRef = getAPOTerm(phenotypeTerms[0],"Observable");
+    	
+    	phenotypeName = phenotypeTerms[0];
     	String qualifierRef =  null;
     	
     	if(phenotypeTerms.length > 1)
     	{
     		qualifierRef = getAPOTerm(phenotypeTerms[1],"Qualifier");
+    		phenotypeName += " " + phenotypeTerms[1];
     	}
     	
+    	
+    	String chemicalRef = null;
+    	
+    	if (! StringUtils.isEmpty(chemicalName))
+    	{
+    		chemicalRef = getChemical(chemicalName);
+    		if(phenotypeName.contains("resistance to chemicals"))
+    		{
+    			phenotypeName = phenotypeName.replace("chemicals",  "[" +chemicalName.toLowerCase() +"]" ) ;
+    		}
+    		
+    		
+    	}
     	
     	MultiKey phenotypeKey = new MultiKey(observableRef,qualifierRef,chemicalRef);
     	
@@ -235,7 +328,11 @@ public class CgdPhenotypeConverter extends BioFileConverter
     	{
     		Item item = createItem("Phenotype");
     		// observable is required
+    		
             item.setReference("observable", observableRef);
+            
+            if (! StringUtils.isEmpty(phenotypeName))
+                item.setAttribute("name", phenotypeName);
             if (! StringUtils.isEmpty(qualifierRef))
             	item.setReference("qualifier", qualifierRef);
             if (! StringUtils.isEmpty(chemicalRef))
@@ -268,8 +365,10 @@ public class CgdPhenotypeConverter extends BioFileConverter
     	return tremRef;
     }
     
+    
     private String getChemical(String chemical ) throws ObjectStoreException {
     	
+    	chemical = chemical.toLowerCase();
     	String chemicalRef = chemicals.get(chemical);
     	if(chemicalRef == null)
     	{
@@ -285,13 +384,22 @@ public class CgdPhenotypeConverter extends BioFileConverter
     }
     
     private String getStrain(String strain ) throws ObjectStoreException {
+    	
+    	if(! StringUtils.isEmpty(namePrefixStrain) && !strain.contains("Other"))
+    	{
+    		strain = namePrefixStrain + " " + strain;
+    	}
+    	
+    	
     	String strainRef = strians.get(strain);
     	if(strainRef == null)
     	{
     		if (!StringUtils.isEmpty(strain)) {
             	Item item = createItem("Strain");
                 item.setAttribute("name", strain);
-                item.setReference("organism", refOragism);
+                
+                // FIXME :: do not set organism here it is causing conlflect ??
+//                item.setReference("organism", refOragism);
                 strainRef = item.getIdentifier();
                 strians.put(strain, strainRef);
                 store(item);
@@ -390,7 +498,7 @@ public class CgdPhenotypeConverter extends BioFileConverter
     	String[] pmidIds = null;
     	if(StringUtils.contains(publicationStr, "|"))
     	{
-    		pmidIds = publicationStr.split("|");
+    		pmidIds = publicationStr.split(Pattern.quote("|"));
     	}
     	else
     	{
@@ -405,6 +513,8 @@ public class CgdPhenotypeConverter extends BioFileConverter
     		{
     			continue;
     		}
+    		// remove leading 
+    		pmidId = pmidId.replace("PMID:", "").trim();
     		
     		String pmidRefId = null;
     		if(pubmeds.containsKey(pmidId))
