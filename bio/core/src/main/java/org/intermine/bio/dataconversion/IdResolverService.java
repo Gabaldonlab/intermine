@@ -342,4 +342,12 @@ public final class IdResolverService
     public static IdResolver getMockIdResolver(String clsName) {
         return new MockIdResolverFactory(clsName).getIdResolver();
     }
+
+    /**
+     * Create a default CGD id resolver
+     * @return an IdResolver
+     */
+    public static IdResolver getCgdIdResolver() {
+        return new CgdIdentifiersResolverFactory().getIdResolver();
+    }
 }
