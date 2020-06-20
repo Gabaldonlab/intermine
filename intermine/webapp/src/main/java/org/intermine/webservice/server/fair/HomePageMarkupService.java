@@ -32,12 +32,13 @@ public class HomePageMarkupService extends JSONService
     @Override
     protected void execute() throws Exception {
         if (SemanticMarkupFormatter.isEnabled()) {
-            addResultItem(SemanticMarkupFormatter.formatInstance(request), false);
+            addResultItem(SemanticMarkupFormatter.formatInstance(request,
+                    getPermission().getProfile()), false);
         }
     }
 
     @Override
     public String getResultsKey() {
-        return "properties";
+        return "semantic-markups";
     }
 }

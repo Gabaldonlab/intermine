@@ -1,4 +1,4 @@
-package org.intermine.api.uri;
+package org.intermine.web.uri;
 
 /*
  * Copyright (C) 2002-2018 FlyMine
@@ -32,9 +32,10 @@ public class InterMineLUIConverterTest extends InterMineAPITestCase {
             ObjectStoreTestUtils.storeData(osw, data);
 
             //set mock methods
-            converter = new MockInterMineLUIConverter();
+            converter = new MockInterMineLUIConverter(im.getProfileManager().getSuperuserProfile());
+            converter.setInterMineAPI(im);
             converter.setObjectStore(os);
-            converter.setSUProfile(im.getProfileManager().getSuperuserProfile());
+
         } catch (Exception e) {
             System.err.println("Error connecting to DB");
             System.err.println(e);
@@ -51,20 +52,14 @@ public class InterMineLUIConverterTest extends InterMineAPITestCase {
     }
 
     public void testGetLUIWithCorrectID() {
-        try {
-            InterMineLUI lui = converter.getInterMineLUI(new Integer(9));
-            assertEquals("Employee", lui.getClassName());
-            assertEquals("EmployeeA2", lui.getIdentifier());
-        } catch (ObjectStoreException ex) {
-        }
+        InterMineLUI lui = converter.getInterMineLUI(new Integer(9));
+        assertEquals("Employee", lui.getClassName());
+        assertEquals("EmployeeA2", lui.getIdentifier());
     }
 
     public void testGetLUIWithWrongID() {
-        try {
-            InterMineLUI lui = converter.getInterMineLUI(new Integer(100));
-            assertNull(lui);
-        } catch (ObjectStoreException ex) {
-        }
+        InterMineLUI lui = converter.getInterMineLUI(new Integer(100));
+        assertNull(lui);
     }
 
     public void testGetID() {
