@@ -262,7 +262,7 @@ public class OboConverter extends DataConverter
             if (!StringUtils.isEmpty(term.getNamespace()) && namespaceToClass.containsKey(term.getNamespace()) )  {
                 inferedTermClass = namespaceToClass.get(term.getNamespace());
             }
-            item = createItem(termClass);
+            item = createItem(inferedTermClass);
             nameToTerm.put(termId, item);
             configureItem(termId, item, term);
         } else {
