@@ -54,6 +54,18 @@ public class OboConverter extends DataConverter
     private String licence, dataset, datasource;
     private String ontologyName;
 
+    // Extention to this converter
+    // ahafez
+    //
+    private static Map<String, String> namespaceToClass = new HashMap<String, String>();
+
+    // a good idea is to load this from the configuratoin file
+    static {
+        namespaceToClass.put("observable","Observable");
+        namespaceToClass.put("experiment_type","ExperimentType");
+        namespaceToClass.put("qualifier","Qualifier");
+        namespaceToClass.put("mutant_type","MutantType");
+    }
     /**
      * Constructor for this class.
      *
@@ -242,6 +254,14 @@ public class OboConverter extends DataConverter
         }
         Item item = nameToTerm.get(termId);
         if (item == null) {
+            // my Extention to this converter
+
+            String inferedTermClass = termClass;
+//        	String nameSpace = term.getNamespace();
+//        	System.out.println("##++ nameSpace : " + nameSpace);
+            if (!StringUtils.isEmpty(term.getNamespace()) && namespaceToClass.containsKey(term.getNamespace()) )  {
+                inferedTermClass = namespaceToClass.get(term.getNamespace());
+            }
             item = createItem(termClass);
             nameToTerm.put(termId, item);
             configureItem(termId, item, term);
